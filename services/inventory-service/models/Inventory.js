@@ -7,11 +7,19 @@ const inventorySchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    name: {
+      type: String,
+      required: true
+    },
     quantity: {
       type: Number,
       required: true,
       default: 0
-    }
+    },
+
+    location: {
+      type: String
+    },
   },
   {
     timestamps: true

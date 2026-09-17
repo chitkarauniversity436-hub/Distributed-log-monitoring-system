@@ -1,4 +1,5 @@
 import Product from "../models/Product.js";
+import sendLog from "../utils/logger.js";
 
 export const getProducts = async (req, res) => {
   try {
@@ -21,6 +22,14 @@ export const addProduct = async (req, res) => {
       name,
       price,
       description
+    });
+
+    await sendLog({
+      level: "info",
+      message: "Product created successfully",
+      method: "POST",
+      endpoint: "/api/products",
+      statusCode: 201
     });
 
     res.status(201).json(product);
