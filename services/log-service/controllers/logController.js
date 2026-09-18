@@ -1,5 +1,4 @@
 import Log from "../models/Log.js";
-import sendLog from "../../user-service/utils/logger.js";
 
 export const getLogs = async (req, res) => {
   try {
@@ -33,6 +32,13 @@ export const addLog = async (req, res) => {
       endpoint,
       statusCode
     });
+
+    // Send the new log to all connected dashboards
+    const io = req.app.get("io");
+
+    if (io) {
+      io.emit("new-log", log);
+    }
 
     res.status(201).json(log);
   } catch (error) {

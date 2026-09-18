@@ -12,6 +12,7 @@ function Navbar() {
         <Link to="/shops">Shops</Link>
         <Link to="/category">Category</Link>
         <Link to="/contact">Contact Us</Link>
+        <Link to="/dashboard">Dashboard</Link>
       </div>
 
       <div className="nav-right">
