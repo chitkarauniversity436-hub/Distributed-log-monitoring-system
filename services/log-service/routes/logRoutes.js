@@ -2,7 +2,8 @@ import express from "express";
 
 import {
   getLogs,
-  addLog
+  addLog,
+  getAnalytics
 } from "../controllers/logController.js";
 
 const router = express.Router();
@@ -10,5 +11,6 @@ const router = express.Router();
 router.get("/", getLogs);
 
 router.post("/", addLog);
+router.get("/analytics", getAnalytics);
 
 export default router;

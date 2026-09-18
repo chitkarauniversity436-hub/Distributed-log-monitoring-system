@@ -13,6 +13,8 @@ function Navbar() {
         <Link to="/category">Category</Link>
         <Link to="/contact">Contact Us</Link>
         <Link to="/dashboard">Dashboard</Link>
+        <Link to="/login">Login</Link>
+        <Link to="/register">Register</Link>
       </div>
 
       <div className="nav-right">
