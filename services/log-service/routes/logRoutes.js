@@ -6,11 +6,14 @@ import {
   getAnalytics
 } from "../controllers/logController.js";
 
+import adminMiddleware from "../middleware/adminMiddleware.js";
+
 const router = express.Router();
 
-router.get("/", getLogs);
+router.get("/", adminMiddleware, getLogs);
+
+router.get("/analytics", adminMiddleware, getAnalytics);
 
 router.post("/", addLog);
-router.get("/analytics", getAnalytics);
 
 export default router;

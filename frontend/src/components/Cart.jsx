@@ -1,35 +1,95 @@
-function Cart({ cart, removeFromCart }) {
+import { useCart } from "../context/CartContext";
+
+function Cart() {
+  const {
+    cart,
+    removeFromCart,
+    increaseQuantity,
+    decreaseQuantity
+  } = useCart();
+
   let total = 0;
 
-  for (let item of cart) {
+  for (const item of cart) {
     total += item.price * item.quantity;
   }
 
   return (
     <div className="cart-box">
+
       <h2>Your Cart</h2>
 
       {cart.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
         <>
-          {cart.map((item, index) => (
-            <div className="cart-item" key={index}>
-              <img src={item.image} alt={item.name} />
+          {cart.map((item) => {
 
-              <div className="item-info">
-                <h4>{item.name}</h4>
-                <p>₹{item.price} × {item.quantity}</p>
+            const imageUrl = item.image
+              ? `http://localhost:3002${item.image}`
+              : "https://via.placeholder.com/100";
+
+            return (
+              <div
+                className="cart-item"
+                key={item.productId}
+              >
+
+                <img
+                  src={imageUrl}
+                  alt={item.name}
+                />
+
+                <div className="item-info">
+
+                  <h4>{item.name}</h4>
+
+                  <p>
+                    ₹{item.price}
+                  </p>
+
+                  <div className="quantity-controls">
+
+                    <button
+                      onClick={() =>
+                        decreaseQuantity(item.productId)
+                      }
+                    >
+                      -
+                    </button>
+
+                    <span>
+                      {item.quantity}
+                    </span>
+
+                    <button
+                      onClick={() =>
+                        increaseQuantity(item.productId)
+                      }
+                    >
+                      +
+                    </button>
+
+                  </div>
+
+                </div>
+
+                <button
+                  onClick={() =>
+                    removeFromCart(item.productId)
+                  }
+                >
+                  Remove
+                </button>
+
               </div>
-
-              <button onClick={() => removeFromCart(index)}>
-                Remove
-              </button>
-            </div>
-          ))}
+            );
+          })}
 
           <div className="cart-total">
-            <h3>Total: ₹{total}</h3>
+            <h3>
+              Total: ₹{total}
+            </h3>
 
             <button className="checkout-btn">
               Proceed to Payment
@@ -37,6 +97,7 @@ function Cart({ cart, removeFromCart }) {
           </div>
         </>
       )}
+
     </div>
   );
 }

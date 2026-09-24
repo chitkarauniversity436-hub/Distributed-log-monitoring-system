@@ -1,79 +1,26 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
-import Cart from "../components/Cart";
+import { useCart } from "../context/CartContext";
 
 function Home() {
-  const [cart, setCart] = useState([]);
+  const [products, setProducts] = useState([]);
 
-  // Load cart from backend when page loads
-  useEffect(() => {
-    fetch("http://localhost:3000/api/cart")
-      .then((res) => res.json())
-      .then((data) => {
-        setCart(data.cart);
-      })
-      .catch((error) => {
-        console.log("Error fetching cart:", error);
-      });
-  }, []);
+  const { addToCart } = useCart();
 
-  const products = [
-    {
-      id: 1,
-      name: "Casual Shirt",
-      price: 799,
-      image: "https://via.placeholder.com/250"
-    },
-    {
-      id: 2,
-      name: "Running Shoes",
-      price: 1499,
-      image: "https://via.placeholder.com/250"
-    },
-    {
-      id: 3,
-      name: "Backpack",
-      price: 999,
-      image: "https://via.placeholder.com/250"
-    }
-  ];
-
-  // Add product to backend cart
-  function addToCart(product) {
-    fetch("http://localhost:3000/api/cart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(product)
+useEffect(() => {
+  fetch("http://localhost:3002/api/products")
+    .then((res) => {
+      console.log("Response status:", res.status);
+      return res.json();
     })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Backend:", data);
-        setCart(data.cart);
-      })
-      .catch((err) => {
-        console.log("Error sending cart:", err);
-      });
-  }
-
-  // Remove/decrease product from backend cart
-  function removeFromCart(index) {
-    const product = cart[index];
-
-    fetch(`http://localhost:3000/api/cart/${product.productId || product.id}`, {
-      method: "DELETE"
+    .then((data) => {
+      console.log("Products received:", data);
+      setProducts(data);
     })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Backend:", data);
-        setCart(data.cart);
-      })
-      .catch((error) => {
-        console.log("Error removing product:", error);
-      });
-  }
-
+    .catch((error) => {
+      console.error("Error fetching products:", error);
+    });
+}, []);
   return (
     <div>
       <section className="hero">
@@ -103,18 +50,13 @@ function Home() {
         <div className="product-list">
           {products.map((product) => (
             <ProductCard
-              key={product.id}
+              key={product._id}
               product={product}
               addToCart={addToCart}
             />
           ))}
         </div>
       </section>
-
-      <Cart
-        cart={cart}
-        removeFromCart={removeFromCart}
-      />
     </div>
   );
 }

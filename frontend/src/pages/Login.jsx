@@ -89,7 +89,7 @@ const Login = () => {
                     <h1>Welcome Back</h1>
 
                     <p>
-                        Sign in to your account
+                        Login to your account
                     </p>
                 </div>
 
@@ -172,7 +172,7 @@ const Login = () => {
                     >
                         {loading
                             ? "Signing in..."
-                            : "Sign In"}
+                            : "Login"}
                     </button>
 
                 </form>

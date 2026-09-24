@@ -31,7 +31,7 @@ const Dashboard = () => {
             setLogs(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error("Failed to fetch logs:", error);
-            setError("Failed to fetch logs");
+            alert(error.message);
         }
     }, []);
 
@@ -41,15 +41,24 @@ const Dashboard = () => {
 
     const loadAnalytics = useCallback(async () => {
         try {
+            const token = localStorage.getItem("token");
+
             const response = await fetch(
-                "http://localhost:3004/api/logs/analytics"
+                "http://localhost:3004/api/logs/analytics",
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                }
             );
 
-            if (!response.ok) {
-                throw new Error("Failed to fetch analytics");
-            }
-
             const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Failed to fetch analytics");
+            }
 
             setAnalytics(data);
         } catch (error) {

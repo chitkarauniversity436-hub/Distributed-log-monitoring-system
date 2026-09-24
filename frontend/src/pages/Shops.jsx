@@ -1,48 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
-import Cart from "../components/Cart";
+import { useCart } from "../context/CartContext";
 
 function Shops() {
-  const [cart, setCart] = useState([]);
+  const [products, setProducts] = useState([]);
 
-  const products = [
-    {
-      id: 1,
-      name: "T-Shirt",
-      price: 599,
-      image: "https://via.placeholder.com/250"
-    },
-    {
-      id: 2,
-      name: "Jeans",
-      price: 1199,
-      image: "https://via.placeholder.com/250"
-    },
-    {
-      id: 3,
-      name: "Sneakers",
-      price: 1799,
-      image: "https://via.placeholder.com/250"
-    },
-    {
-      id: 4,
-      name: "Watch",
-      price: 999,
-      image: "https://via.placeholder.com/250"
-    }
-  ];
+  const { addToCart } = useCart();
 
-  function addToCart(product) {
-    setCart([...cart, product]);
-  }
+  useEffect(() => {
+    fetch("http://localhost:3002/api/products")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch products");
+        }
 
-  function removeFromCart(index) {
-    const newCart = [...cart];
-
-    newCart.splice(index, 1);
-
-    setCart(newCart);
-  }
+        return res.json();
+      })
+      .then((data) => {
+        setProducts(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+  }, []);
 
   return (
     <main className="page">
@@ -56,17 +36,12 @@ function Shops() {
       <div className="product-list">
         {products.map((product) => (
           <ProductCard
-            key={product.id}
+            key={product._id}
             product={product}
             addToCart={addToCart}
           />
         ))}
       </div>
-
-      <Cart
-        cart={cart}
-        removeFromCart={removeFromCart}
-      />
     </main>
   );
 }

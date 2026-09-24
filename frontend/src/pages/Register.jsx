@@ -330,7 +330,7 @@ const Register = () => {
                     <p>
                         Already have an account?{" "}
                         <Link to="/login">
-                            Sign in
+                            Login
                         </Link>
                     </p>
 

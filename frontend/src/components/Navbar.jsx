@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
 
 function Navbar() {
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  };
+
   return (
     <nav className="navbar">
       <div className="logo">
@@ -19,6 +24,10 @@ function Navbar() {
 
       <div className="nav-right">
         <button className="search-btn">🔍</button>
+
+        <button onClick={handleLogout}>
+          Logout
+        </button>
 
         <Link to="/cart" className="cart-btn">
           Cart

@@ -101,15 +101,16 @@ export const loginUser = async (req, res) => {
 
     // Create JWT
     const token = jwt.sign(
-      {
+    {
         userId: user._id,
-        email: user.email
-      },
-      process.env.JWT_SECRET,
-      {
+        email: user.email,
+        role: user.role
+    },
+    process.env.JWT_SECRET,
+    {
         expiresIn: "1h"
-      }
-    );
+    }
+);
 
     // Send log to Log Service
     await sendLog({
@@ -127,17 +128,17 @@ export const loginUser = async (req, res) => {
     });
 
   } catch (error) {
-  await sendLog({
-    level: "error",
-    message: error.message,
-    method: "POST",
-    endpoint: "/api/users/login",
-    statusCode: 500
-  });
+    await sendLog({
+      level: "error",
+      message: error.message,
+      method: "POST",
+      endpoint: "/api/users/login",
+      statusCode: 500
+    });
 
-  res.status(500).json({
-    message: "Login failed",
-    error: error.message
-  });
-}
+    res.status(500).json({
+      message: "Login failed",
+      error: error.message
+    });
+  }
 };

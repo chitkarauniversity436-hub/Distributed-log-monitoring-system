@@ -1,17 +1,42 @@
-function ProductCard({ product, addToCart }) {
+function ProductCard({
+  product,
+  addToCart
+}) {
+
+  const imageUrl = product.image
+    ? `http://localhost:3002${product.image}`
+    : "https://via.placeholder.com/250";
+
+
   return (
+
     <div className="product-card">
-      <img src={product.image} alt={product.name} />
 
-      <h3>{product.name}</h3>
+      <img
+        src={imageUrl}
+        alt={product.name}
+      />
 
-      <p>₹{product.price}</p>
+      <h3>
+        {product.name}
+      </h3>
 
-      <button onClick={() => addToCart(product)}>
+      <p>
+        ₹{product.price}
+      </p>
+
+      <button
+        onClick={() =>
+          addToCart(product)
+        }
+      >
         Add to Cart
       </button>
+
     </div>
+
   );
+
 }
 
 export default ProductCard;
